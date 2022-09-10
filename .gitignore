@@ -2,3 +2,5 @@ config.ini
 *.session
 *.session-journal
 sandbox.py
+virtual_env_1/
+.idea/
