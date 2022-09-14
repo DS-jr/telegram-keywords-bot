@@ -350,13 +350,13 @@ import bot_logics
 # user.send_message(keywords_chat_id, 'bot started')
 # user.send_message(mentions_chat_id, 'bot started')
 # user.send_message(following_chat_id, 'bot started')
-print('bot started')
+print("bot started")
 idle()
 
 # stop message
 # user.send_message(keywords_chat_id, 'bot stopped')
 # user.send_message(mentions_chat_id, 'bot stopped')
 # user.send_message(following_chat_id, 'bot stopped')
-print('stopping bot...')
+print("stopping bot...")
 user.stop()
-print('bot stopped')
+print("bot stopped")
