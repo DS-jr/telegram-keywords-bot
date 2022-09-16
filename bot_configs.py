@@ -1,3 +1,6 @@
+from configparser import ConfigParser
+from pyrogram import Client
+
 # read config
 config = ConfigParser()
 config.read('config.ini')

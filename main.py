@@ -2,7 +2,7 @@ from posixpath import split
 from re import match
 import re
 from pyrogram import Client, filters, idle
-from configparser import ConfigParser
+# from configparser import ConfigParser
 import bot_configs
 import bot_logics
 

@@ -62,7 +62,7 @@ chat_dict = {
     "Following": "following_chat_id"
 }
 for k in chat_dict:
-    if not globals()[chat_dict[k]]:
+    if not globals()[chat_dict[k]]:  # ?
         new_chat = user.create_group(k, dummy_bot_name)
         globals()[chat_dict[k]] = new_chat.id
         config_set_and_save('bot_params', chat_dict[k], str(new_chat.id))
