@@ -4,3 +4,4 @@ config.ini
 sandbox.py
 virtual_env_1/
 .idea/
+__pycache__/
