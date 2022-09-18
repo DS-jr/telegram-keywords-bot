@@ -204,7 +204,7 @@ class KeywordsBot:
 
     # listen to only other users' messages;
     # skip message edits for now (TODO: handle edited messages)
-    @user.on_message(~filters.me & ~filters.edited)
+    @user.on_message(~filters.me & ~filters.edited)   #  NameError: name 'user' is not defined
     def notmyHandler(client, message):
         # print(message)
         # process keywords

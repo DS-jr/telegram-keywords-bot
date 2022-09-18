@@ -3,16 +3,20 @@ from re import match
 import re
 from pyrogram import Client, filters, idle
 from configparser import ConfigParser
-import bot_configs
-import bot_logics
+
+import bot   # Is this line necessary?
+import config   # Is this line necessary?
+from config import bot_config   # Is this line necessary?
+from bot import KeywordsBot   # Is this line necessary?
+
 
 # # read config
 # config = ConfigParser()
 # config.read('config.ini')
 #
-# # start app
+# start app
 # user = Client('user')
-#
+# #
 # # TODO catch 401 error when session is expired / removed, delete user.session file and try again
 # user.start()
 # user_info = user.get_me()
