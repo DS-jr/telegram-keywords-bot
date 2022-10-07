@@ -3,4 +3,6 @@ config.ini
 *.session-journal
 sandbox.py
 virtual_env_1/
+env/
 .idea/
+__pycache__/
