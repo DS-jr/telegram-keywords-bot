@@ -6,7 +6,9 @@
 - install python3.10 (https://www.python.org/downloads/) # Python version 3.10 is necessary to run the bot 
 - run `pip install -r requirements.txt`
 - copy config_sample.ini to config.ini and edit it with your personal App api_id and api_hash (get here: https://my.telegram.org/auth?to=apps)
-- start the bot with `python3.10 ./main.py`
+- start the bot with:
+  - a) `python3.10 ./main.py` - to run the bot temporarily 
+  - b) `nohup python3.10 ./main.py &` - to run the bot 24/7 on server as a background process
 
 ### During the first session of running the bot with Python via Terminal:
 - Pyrogram asks you to enter the phone number attached to your Telegram account (just digits including your Country Code digit(s), other symbols can be omitted)
