@@ -66,7 +66,7 @@ def find_users(client, args):
 ############## bot commands handlers #################
 
 # command messages listener
-@user.on_message(filters.me & ~filters.edited & filters.command(['help', 'add', 'show', 'remove', 'findchat', 'exclude', 'include', 'follow', 'unfollow']))
+@user.on_message(filters.me & ~filters.edited & filters.command(['help', 'add', 'show', 'remove', 'findid', 'exclude', 'include', 'follow', 'unfollow']))
 def commHandler(client, message):
     # accept commands only for bot chat ids
     if not message.chat or not str(message.chat.id) in (keywords_chat_id, following_chat_id, mentions_chat_id):
@@ -89,7 +89,7 @@ def kwHandler(client, message):
     match comm:
         case 'help':
             message.reply_text(
-                '/add keyword1 keyword2\n/show\n/remove keyword1 keyword2\n/removeall\n/findchat name|id|@username\n/exclude name|id|@username\n/include name|id|@username keywords')
+                '/add keyword1 keyword2\n/show\n/remove keyword1 keyword2\n/removeall\n/findid name|id|@username\n/exclude name|id|@username\n/include name|id|@username keywords')
         case 'add':
             for keyword in args:
                 keywords.add(keyword.strip().replace(',', ''))
@@ -109,38 +109,38 @@ def kwHandler(client, message):
             message.reply_text('removed ' + str(len(keywords)) + ' keywords')
             keywords.clear()
             save_keywords(keywords)
-        case 'findchat':
+        case 'findid':
             if(not args):
                 return
             dialogs = find_chats(client, args)
             message.reply_text('\n'.join([' - '.join(dialog) for dialog in dialogs]) if len(
-                dialogs) else 'Ничего не найдено')
+                dialogs) else 'Sorry, nothing is found')
         case 'exclude':
             if not args:
                 return
             dialogs = find_chats(client, args)
             if(len(dialogs) != 1):
-                message.reply_text('Найдено больше одного чата:\n' + '\n'.join([' - '.join(
-                    dialog) for dialog in dialogs]) if len(dialogs) else 'Ничего не найдено')
+                message.reply_text('More than one chat is found:\n' + '\n'.join([' - '.join(
+                    dialog) for dialog in dialogs]) if len(dialogs) else 'Sorry, nothing is found')
             else:
                 excluded_chats.add(dialogs[0][0])
                 save_excluded_chats(excluded_chats)
                 message.reply_text(
-                    'Чат добавлен в список исключений:\n' + ' - '.join(dialogs[0]))
+                    'This chat was added to excluded chat list:\n' + ' - '.join(dialogs[0]))
         case 'include':
             if len(args) < 2:
                 return
             chat_name = args.pop(0)
             dialogs = find_chats(client, [chat_name])
             if(len(dialogs) != 1):
-                message.reply_text('Найдено больше одного чата:\n' + '\n'.join([' - '.join(
-                    dialog) for dialog in dialogs]) if len(dialogs) else 'Ничего не найдено')
+                message.reply_text('More than one chat is found:\n' + '\n'.join([' - '.join(
+                    dialog) for dialog in dialogs]) if len(dialogs) else 'Sorry, nothing is found')
             else:
                 add_keywords_to_includes(dialogs[0][0], args)
-                message.reply_text('Ключевые слова #{} для чата:\n'.format(', #'.join(
+                message.reply_text('Keywords #{} for the chat:\n'.format(', #'.join(
                     includes_dict[dialogs[0][0]])) + ' - '.join(dialogs[0]))
         case _:
-            message.reply_text('Неизвестная команда')
+            message.reply_text('Sorry, this command is not valid')
 
 # forwards chat handler
 
@@ -154,16 +154,16 @@ def fwHandler(client, message):
     match comm:
         case 'show':
             message.reply('\n'.join([' - '.join(user) for user in find_users(
-                client, following_set)]) if following_set else 'Список пуст')
+                client, following_set)]) if following_set else 'The list is empty')
         case 'unfollow':
             if not args or not args[0] in following_set:
-                message.reply('Не найден')
+                message.reply('Not found')
             else:
                 following_set.discard(args[0])
                 save_following(following_set)
-                message.reply('{} удален из подписок'.format(args[0]))
+                message.reply('{} Deleted from Following'.format(args[0]))
         case _:
-            message.reply('Неизвестная команда')
+            message.reply('Sorry, this command is not valid')
 
 
 # process incoming messages
@@ -206,12 +206,12 @@ def myHandler(client, message):
         return
     if message.forward_from:
         if str(message.forward_from.id) in following_set:
-            message.reply('Уже следим за id {}'.format(
+            message.reply('Following already works for id {}'.format(
                 message.forward_from.id))
         else:
             following_set.add(str(message.forward_from.id))
             save_following(following_set)
-            message.reply('id {} добавлен в список отслеживания'.format(
+            message.reply('id {} is added to Following list'.format(
                 message.forward_from.id))
 
 
@@ -221,25 +221,25 @@ def makeUserMention(user):
 
 
 def makeMessageDescription(message):
-    # личные
+    # Direct Messages
     if message.chat.type == 'private':
-        source = 'в лс ({})'.format(makeUserMention(message.from_user))
-    # каналы
+        source = 'in Direct Messages ({})'.format(makeUserMention(message.from_user))
+    # Channels
     elif message.chat.type == 'channel':
-        source = 'в канале {} @{}'.format(message.chat.title,
+        source = 'in channel {} @{}'.format(message.chat.title,
                                           message.chat.username)
-    # группы и супергруппы
+    # Groups and Supergroups
     else:
         source_chat_name = str(
-            message.chat.title) if message.chat.title else '<без имени>'
+            message.chat.title) if message.chat.title else '<unnamed chat>'
         source_chat_link = ' @' + \
             str(message.chat.username) if message.chat.username else ''
-        source = 'в чате {}{} от {}'.format(
+        source = 'in chat "{}" {} by {}'.format(
             source_chat_name, source_chat_link, makeUserMention(message.from_user))
 
     # forward of forward loses the first person
     if message.forward_from:
-        return '{}, форвард от - {}'.format(source, makeUserMention(message.forward_from))
+        return '{}, forwarded from - {}'.format(source, makeUserMention(message.forward_from))
 
     return source
 
@@ -255,17 +255,17 @@ def keywords_forward(client, message, keyword):
 def mentions_forward(client, message):
     source = makeMessageDescription(message)
     client.send_message(
-        mentions_chat_id, 'Уведомление {}'.format(source))
+        mentions_chat_id, 'Mentioned {}'.format(source))
     message.forward(mentions_chat_id)
-    client.mark_chat_unread(keywords_chat_id)
+    client.mark_chat_unread(mentions_chat_id)
 
 
 def following_forward(client, message):
     source = makeMessageDescription(message)
     client.send_message(
-        following_chat_id, 'Активность {}'.format(source))
+        following_chat_id, 'Action detected {}'.format(source))
     message.forward(following_chat_id)
-    client.mark_chat_unread(keywords_chat_id)
+    client.mark_chat_unread(following_chat_id)
 
 
 def start_bot():

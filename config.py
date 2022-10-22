@@ -74,5 +74,3 @@ def config_set_and_save(section, param_name, param_value, skip_set=False):
         config.set(section, param_name, param_value)
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
-
-
