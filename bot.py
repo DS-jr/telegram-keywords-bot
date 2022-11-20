@@ -1,12 +1,43 @@
 import re
 from pyrogram import Client, filters, idle
-
+from datetime import datetime
 from config import config, keywords_chat_id, following_chat_id, mentions_chat_id, keywords, save_keywords, \
     excluded_chats, save_excluded_chats, add_keywords_to_includes, includes_dict, following_set, save_following, \
     dummy_bot_name, config_set_and_save
 
 # start app
 user = Client('user')
+
+async def forward_all_messages_from_chat(client, from_chat_id, to_chat_id):
+    async with client:
+        async for message in client.iter_history(from_chat_id):  # iter_history is used in Pyrogram v.1.4. instead of get_chat_history in v2.0.
+            if message.service:
+                continue
+            message_datetime = datetime.fromtimestamp(message.date)
+            await client.send_message(chat_id=to_chat_id, text=message_datetime.strftime("%A, %d. %B %Y %I:%M%p")) # To show the exact time
+            await message.forward(to_chat_id)
+
+user.run(forward_all_messages_from_chat(user, from_chat_id, to_chat_id))  # Substitute_chat_id & to_chat_id manually with chat IDs here (use bot's /findid command to get chat IDs)
+
+            # print(message.date, message_datetime)
+
+# @user.on_message()
+# async def my_handler(client, message):
+#     await message.forward("me")  # (in real time!) Forwards ALL incomming messages to myself (to 'Saved messages' chat):
+#
+# user.run()
+
+# def main():
+    # "me" refers to your own chat (Saved Messages)
+    # for message in app.get_chat_history("me"):
+    #     print(message)
+
+# for message in user.get_chat_history():
+            #print(message.text)
+
+# for message in user.get_history():
+            #print(message.text)
+
 
 # TODO catch 401 error when session is expired / removed, delete user.session file and try again
 user.start()
