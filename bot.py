@@ -109,19 +109,21 @@ def commHandler(client, message):
     if chat_id == keywords_chat_id:
         kwHandler(client, message)
     elif chat_id == following_chat_id:
-        fwHandler(client, message)
+        follow_handler(client, message)
 
 # keywords chat handler
-
-
 def kwHandler(client, message):
     args = message.command
     comm = args.pop(0)
 
     match comm:
         case 'help':
+            help_message = '/add keyword1 keyword2\n/show\n/remove keyword1 keyword2\n/removeall\n/findid ' \
+                                'chat_title|name|id|@username\n/exclude_chat ' \
+                                'chat_title|id|@username\n/excluded_chats_list\n/delete_from_excluded_chats chat_id\n/include ' \
+                                'name|id|@username keywords'
             message.reply_text(
-                '/add keyword1 keyword2\n/show\n/remove keyword1 keyword2\n/removeall\n/findid chat_title|name|id|@username\n/exclude_chat chat_title|id|@username\n/excluded_chats_list\n/delete_from_excluded_chats chat_id\n/include name|id|@username keywords')
+                help_message)
         case 'add':
             for keyword in args:
                 keywords.add(keyword.strip().replace(',', ''))
@@ -235,10 +237,10 @@ def kwHandler(client, message):
 # forwards chat handler
 
 
-def fwHandler(client, message):
+def follow_handler(client, message):
     if str(message.chat.id) != following_chat_id:
         return
-    # print(message)
+    print(message)
     args = message.command
     comm = args.pop(0)
     match comm:
