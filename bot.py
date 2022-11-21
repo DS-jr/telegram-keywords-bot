@@ -17,7 +17,8 @@ async def forward_all_messages_from_chat(client, from_chat_id, to_chat_id):
             await client.send_message(chat_id=to_chat_id, text=message_datetime.strftime("%A, %d. %B %Y %I:%M%p")) # To show the exact time
             await message.forward(to_chat_id)
 
-user.run(forward_all_messages_from_chat(user, from_chat_id, to_chat_id))  # Substitute_chat_id & to_chat_id manually with chat IDs here (use bot's /findid command to get chat IDs)
+# Substitute_chat_id & to_chat_id manually with chat IDs here (use bot's /findid command to get chat IDs)
+# user.run(forward_all_messages_from_chat(user, from_chat_id = 0, to_chat_id = 0))
 
             # print(message.date, message_datetime)
 

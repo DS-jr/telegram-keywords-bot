@@ -1,8 +1,3 @@
-### Prerequisites
-- Docker # Install Docker Engine for your OS 
-- Docker Compose  
-- ... 
-
 ### Setup
 - clone this repo
 - create & activate a virtual environment named `env`
@@ -18,24 +13,26 @@
 - You’ll receive a confirmation code from Telegram
 - If your Telegram account has two-step verification enabled - your password will be required 
 - If you see ‘bot started’ phrase in Terminal - the bot is working 
-- Three group chats (‘Keywords’, ‘Following’, ‘Mentions’) will appear in your Telegram account with @MyLittleDummyBot in every chat  
+- Three group chats (‘Keywords’, ‘Following’, ‘Mentions’) will appear in your Telegram account with `@MyLittleDummyBot` in every chat. The bot is needed to create a group (it takes 2 to make a group). You can set your name in `config.ini` with name `dummy_bot_name = MyLittleDummyBot `
+
 
 ### Commands
 #### 1. Keywords bot
 Forwards messages that contain specified keywords to 'Keywords' chat  
 ##### In ‘Keywords’ chat:
-- /help - show a list of Keywords bot commands
-- /add keyword1 keyword2 ... - add new keyword(s) to global listener
-- /remove keyword1 keyword2 ... - remove keyword(s) from global listener
-- /show - show all keywords
-- /exclude_chat chat_title | chat_id | @username - exclude chat or user or channel from being monitored by Keywords bot (may work slowly, wait for bot's response)
-- /excluded_chats_list - show IDs of all excluded chats 
-- /delete_from_excluded_chats chat_id - delete a chat from your excluded chats list
-- /findid chat_title | first_name last_name | id | @username - find IDs & names of chats or users or channels (may work slowly, wait for bot's response) 
-- 
-- (??) /forward_all_messages_from_chat (?)chat_id - forward all messages from specific chat (selected by ID) to another chat. Use /findid command to get chats' IDs    
-- 
-- /removeall - remove all keywords from global listener (turned off currently)
+- `/help` - show a list of Keywords bot commands
+
+> - /add keyword1 keyword2 ... - add new keyword(s) to global listener
+> - /remove keyword1 keyword2 ... - remove keyword(s) from global listener
+> - /show - show all keywords
+> - /exclude_chat chat_title | chat_id | @username - exclude chat or user or channel from being monitored by Keywords bot (may work slowly, wait for bot's response)
+> - /excluded_chats_list - show IDs of all excluded chats 
+> - /delete_from_excluded_chats chat_id - delete a chat from your excluded chats list
+> - /findid chat_title | first_name last_name | id | @username - find IDs & names of chats or users or channels (may work slowly, wait for bot's response) 
+> - (??) `/forward_all_messages_from_chat` 
+> chat_id - forward all messages from specific chat (selected by ID) to another chat. Use /findid command to get chats' IDs    
+> - /removeall - remove all keywords from global listener (turned off currently)
+
 #### 2. Mentions bot
 Forwards to 'Mentions' chat all the messages where you were tagged (your TG account was mentioned). Replies to your messages are also counted as mentions 
 #### 3. Following Bot
