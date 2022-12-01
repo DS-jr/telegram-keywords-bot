@@ -9,6 +9,38 @@ from threading import Timer
 # start app
 user = Client('user')
 
+async def forward_all_messages_from_chat(client, from_chat_id, to_chat_id):
+    async with client:
+        async for message in client.iter_history(from_chat_id):  # iter_history is used in Pyrogram v.1.4. instead of get_chat_history in v2.0.
+            if message.service:
+                continue
+            message_datetime = datetime.fromtimestamp(message.date)
+            await client.send_message(chat_id=to_chat_id, text=message_datetime.strftime("%A, %d. %B %Y %I:%M%p")) # To show the exact time
+            await message.forward(to_chat_id)
+
+# Substitute_chat_id & to_chat_id manually with chat IDs here (use bot's /findid command to get chat IDs)
+# user.run(forward_all_messages_from_chat(user, from_chat_id = 0, to_chat_id = 0))
+
+            # print(message.date, message_datetime)
+
+# @user.on_message()
+# async def my_handler(client, message):
+#     await message.forward("me")  # (in real time!) Forwards ALL incomming messages to myself (to 'Saved messages' chat):
+#
+# user.run()
+
+# def main():
+    # "me" refers to your own chat (Saved Messages)
+    # for message in app.get_chat_history("me"):
+    #     print(message)
+
+# for message in user.get_chat_history():
+            #print(message.text)
+
+# for message in user.get_history():
+            #print(message.text)
+
+
 # TODO catch 401 error when session is expired / removed, delete user.session file and try again
 user.start()
 user_info = user.get_me()
@@ -65,7 +97,6 @@ def find_users(client, args):
         )
     return result
 
-
 def forward_all_messages_from_chat(client, from_chat_id):
     forward_all_messages_chat_size = client.get_history_count(forward_all_messages_chat_id)
     skipped_service_messages = 0
@@ -117,7 +148,7 @@ def commHandler(client, message):
     if chat_id == keywords_chat_id:
         kwHandler(client, message)
     elif chat_id == following_chat_id:
-        fwHandler(client, message)
+        follow_handler(client, message)
 
 # keywords chat handler
 def kwHandler(client, message):
@@ -126,8 +157,20 @@ def kwHandler(client, message):
 
     match comm:
         case 'help':
+            help_message = '/add keyword1 keyword2\n' \
+                           '/show' \
+                           '\n/remove keyword1 keyword2' \
+                           '\n/removeall' \
+                           '\n/findid chat_title|name|id|@username' \
+                           '\n/exclude_chat chat_title|id|@username' \
+                           '\n/excluded_chats_list' \
+                           '\n/delete_from_excluded_chats chat_id' \
+                           '\n/forward_all_messages_from_chat from_chat_id' \
+                           '\n/include name|id|@username keywords'
+
+
             message.reply_text(
-                '/add keyword1 keyword2\n/show\n/remove keyword1 keyword2\n/removeall\n/findid chat_title|name|id|@username\n/exclude_chat chat_title|id|@username\n/excluded_chats_list\n/delete_from_excluded_chats chat_id\n/forward_all_messages_from_chat from_chat_id\n/include name|id|@username keywords')
+                help_message)
         case 'add':
             for keyword in args:
                 keywords.add(keyword.strip().replace(',', ''))
@@ -205,10 +248,10 @@ def kwHandler(client, message):
             message.reply_text('Sorry, this command is not valid')
 
 # forwards chat handler
-def fwHandler(client, message):
+def follow_handler(client, message):
     if str(message.chat.id) != following_chat_id:
         return
-    # print(message)
+    print(message)
     args = message.command
     comm = args.pop(0)
     match comm:
