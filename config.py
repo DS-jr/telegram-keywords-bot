@@ -1,14 +1,28 @@
 # read config
 from configparser import ConfigParser
 
-config = ConfigParser()
-config.read('config.ini')
+# config = ConfigParser()
+# config.read('config.ini')
 
-if not config.has_section('bot_params'):
-    config.add_section('bot_params')
+# if not config.has_section('bot_params'):
+#     config.add_section('bot_params')
+#
+# if not config.has_section('includes_dict'):
+#     config.add_section('includes_dict')
 
-if not config.has_section('includes_dict'):
-    config.add_section('includes_dict')
+def read_config():
+    config = ConfigParser()
+    config.read('config.ini')
+
+    if not config.has_section('bot_params'):
+        config.add_section('bot_params')
+
+    if not config.has_section('includes_dict'):
+        config.add_section('includes_dict')
+
+    return config
+
+config = read_config()
 
 keywords = set(filter(None, config.get(
     'bot_params', 'keywords', fallback='').split(',')))
@@ -63,15 +77,16 @@ def remove_keywords_from_includes(chat, keywords):
 
 
 def save_includes(includes):
+    config_2 = read_config()
     includes = set(filter(None, includes))
     for include in includes:
-        config.set('chat_specific_keywords', include['id'], str(
-            ','.join(include['keywords'])))
+        config_2.set('chat_specific_keywords', include['id'], str(','.join(include['keywords'])))
     config_set_and_save(skip_set=True)
 
 
 def config_set_and_save(section, param_name, param_value, skip_set=False):
+    config_2 = read_config()
     if(not skip_set):
-        config.set(section, param_name, param_value)
+        config_2.set(section, param_name, param_value)
     with open('config.ini', 'w') as configfile:
-        config.write(configfile)
+        config_2.write(configfile)

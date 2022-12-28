@@ -9,10 +9,6 @@ from config import config, keywords_chat_id, following_chat_id, mentions_chat_id
 # start app
 user = Client('user')
 
-# TODO catch 401 error when session is expired / removed, delete user.session file and try again
-user.start()
-user_info = user.get_me()
-
 # init chats
 chat_dict = {
     "Keywords": "keywords_chat_id",
@@ -21,11 +17,6 @@ chat_dict = {
     "Forward_all_messages_from_chat": "forward_all_messages_chat_id"
 }
 
-for k in chat_dict:
-    if not globals()[chat_dict[k]]:
-        new_chat = user.create_group(k, dummy_bot_name)
-        globals()[chat_dict[k]] = new_chat.id
-        config_set_and_save('bot_params', chat_dict[k], str(new_chat.id))
 
 def is_id(val):
     try:
@@ -66,7 +57,7 @@ def find_users(client, args):
     return result
 
 
-def get_history_count(from_chat_id):
+def get_history_count(from_chat_id):   #  ? (test) Is this function necessary
     pass
 
 
@@ -349,6 +340,15 @@ def following_forward(client, message):
 
 
 def start_bot():
+    # TODO catch 401 error when session is expired / removed, delete user.session file and try again
+    user.start()
+    user_info = user.get_me()
+
+    for k in chat_dict:
+        if not globals()[chat_dict[k]]:
+            new_chat = user.create_group(k, dummy_bot_name)
+            globals()[chat_dict[k]] = new_chat.id
+            config_set_and_save('bot_params', chat_dict[k], str(new_chat.id))
     # init message
     # user.send_message(keywords_chat_id, 'bot started')
     # user.send_message(mentions_chat_id, 'bot started')
