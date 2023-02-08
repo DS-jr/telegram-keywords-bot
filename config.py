@@ -26,6 +26,7 @@ dummy_bot_name = config.get(
 keywords_chat_id = config.get('bot_params', 'keywords_chat_id', fallback='')
 mentions_chat_id = config.get('bot_params', 'mentions_chat_id', fallback='')
 following_chat_id = config.get('bot_params', 'following_chat_id', fallback='')
+forward_all_messages_chat_id = config.get('bot_params', 'forward_all_messages_chat_id', fallback='')
 
 def save_keywords(keywords):
     keywords = set(filter(None, keywords))

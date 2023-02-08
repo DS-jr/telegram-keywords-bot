@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  main:
+    build: .
+    volumes:
+      - ".:/container1:rw"
+    restart: always
+
