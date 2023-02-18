@@ -3,40 +3,41 @@
 - [Telegram](https://telegram.org/) account 
 
 ### Setup and authorization via Terminal
-- clone this repo  
-- create a new App attached to your Telegram account [here](https://my.telegram.org/auth?to=apps) ('URL' & 'Description' fields may be kept empty, 'Platform' - select 'Web') 
-- Run `docker volume create your_volume_name` - to create Docker volume on your host 
-- Run `docker run -it --rm -v your_volume_name:/app ghcr.io/ds-jr/telegram-keywords-bot-image_3` - to login to your Telegram account 
-- Paste your Telegram App's `api_id` and `api_hash`. Get them from 'App configuration' at https://my.telegram.org/apps 
-- Pyrogram asks to enter the phone number attached to your Telegram account (just digits including your Country Code digit(s), other symbols can be omitted)
-- Paste confirmation code sent by Telegram to your account 
-- If your Telegram account has two-step verification enabled - your password will be required 
-- When you see ‘bot started’ phrase in Terminal - four new chats (‘Keywords’, ‘Following’, ‘Mentions’, 'Forward_all_messages_from_chat') will appear in your Telegram account  
-- Stop the script (Ctrl+C)
-- Run `docker run -d -v your_volume_name:/app --restart unless-stopped ghcr.io/ds-jr/telegram-keywords-bot-image_3` - launch bot in a container 
+1. clone this repo  
+1. create a new App attached to your Telegram account [here](https://my.telegram.org/auth?to=apps) ('URL' & 'Description' fields may be kept empty, 'Platform' - select 'Web') 
+1. Run `docker volume create your_volume_name` - to create Docker volume on your host 
+1. Run `docker run -it --rm -v your_volume_name:/app ghcr.io/ds-jr/telegram-keywords-bot-image_3` - to login to your Telegram account 
+1. Paste your Telegram App's `api_id` and `api_hash`. Get them from 'App configuration' at https://my.telegram.org/apps 
+21. Pyrogram asks to enter the phone number attached to your Telegram account (just digits including your Country Code digit(s), other symbols can be omitted)
+1. Paste confirmation code sent by Telegram to your account 
+1. If your Telegram account has two-step verification enabled - your password will be required 
+1. When you see ‘bot started’ phrase in Terminal - four new chats (‘Keywords’, ‘Following’, ‘Mentions’, 'Forward_all_messages_from_chat') will appear in your Telegram account  
+1. Stop the script (Ctrl+C)
+1. Run `docker run -d -v your_volume_name:/app --restart unless-stopped ghcr.io/ds-jr/telegram-keywords-bot-image_3` - launch bot in a container 
 
 ### Commands
 #### 1. Keywords bot
 Forwards messages that contain specified keywords to 'Keywords' chat  
 ##### In ‘Keywords’ chat:
-- /help - show a list of Keywords bot commands
-- /add keyword1 keyword2 ... - add new keyword(s) to global listener
-- /remove keyword1 keyword2 ... - remove keyword(s) from global listener
-- /show - show all keywords
-- /exclude_chat chat_title | chat_id | @username - exclude chat or user or channel from being monitored by Keywords bot (may work slowly, wait for bot's response)
-- /excluded_chats_list - show IDs of all excluded chats 
-- /delete_from_excluded_chats chat_id - delete a chat from your excluded chats list
-- /findid chat_title | first_name last_name | id | @username - find IDs & names of chats or users or channels (may work slowly, wait for bot's response) 
-- /forward_all_messages_from_chat from_chat_id - forward all messages from specific chat to 'Forward_all_messages_from_chat' chat (was created automatically in your TG account). Use /findid command manually to get chat's ID
-- /removeall - remove all keywords from global listener (turned off currently)
+- `/help`- show a list of Keywords bot commands
+- `/help`- show a list of Keywords bot commands
+- `/add`keyword1 keyword2 ... - add new keyword(s) to global listener
+- `/remove`keyword1 keyword2 ... - remove keyword(s) from global listener
+- `/show`- show all keywords
+- `/exclude_chat`chat_title | chat_id | @username - exclude chat or user or channel from being monitored by Keywords bot (may work slowly, wait for bot's response)
+- `/excluded_chats_list`- show IDs of all excluded chats 
+- `/delete_from_excluded_chats`chat_id - delete a chat from your excluded chats list
+- `/findid`chat_title | first_name last_name | id | @username - find IDs & names of chats or users or channels (may work slowly, wait for bot's response) 
+- `/forward_all_messages_from_chat`from_chat_id - forward all messages from specific chat to 'Forward_all_messages_from_chat' chat (was created automatically in your TG account). Use `/findid`command manually to get chat's ID
+- `/removeall`- remove all keywords from global listener (turned off currently)
 #### 2. Mentions bot
 Forwards to 'Mentions' chat all the messages where you were tagged (your TG account was mentioned). Replies to your messages are also counted as mentions 
 #### 3. Following Bot
 Forwards all messages from specified users to 'Following' chat  
 ##### In ‘Following’ chat:
 - To follow a Telegram user: forward manually any message from this user to ‘Following’ chat
-- /show - to check IDs of all Telegram users you are currently following
-- /unfollow user_ID - to remove a user from the list of who you follow
+- `/show`- to check IDs of all Telegram users you are currently following
+- `/unfollow`user_ID - to remove a user from the list of who you follow
 
 ### Pay attention:
 - This bot is a Telegram client & an app. It is NOT a ‘usual TG bot via BotFather’, so do NOT create a new bot via BotFather 
