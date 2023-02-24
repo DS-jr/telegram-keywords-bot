@@ -4,6 +4,13 @@ services:
   main:
     build: .
     volumes:
-      - ".:/container1:rw"
+      - type: bind
+        source: ./config.ini
+        target: /app/config.ini
+        read_only: false
+      - type: bind
+        source: ./user.session
+        target: /app/user.session
+        read_only: false
     restart: always
 
