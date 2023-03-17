@@ -40,6 +40,8 @@ mentions_chat_id = config.get('bot_params', 'mentions_chat_id', fallback='')
 following_chat_id = config.get('bot_params', 'following_chat_id', fallback='')
 backup_all_messages_chat_id = config.get('bot_params', 'backup_all_messages_chat_id', fallback='')
 edited_and_deleted_chat_id = config.get('bot_params', 'edited_and_deleted_chat_id', fallback='')
+pinned_messages_chat_id = config.get('bot_params', 'pinned_messages_chat_id', fallback='')
+findid_chat_id = config.get('bot_params', 'findid_chat_id', fallback='')
 
 
 def save_keywords(keywords):
